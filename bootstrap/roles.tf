@@ -5,7 +5,7 @@ locals {
 
 data "aws_iam_policy_document" "push_trust" {
   statement {
-    effect  = "allow"
+    effect  = "Allow"
     actions = ["sts:AssumeRoleWithWebIdentity"]
 
     principals {
@@ -34,7 +34,7 @@ resource "aws_iam_role" "push" {
 
 data "aws_iam_policy_document" "apply_trust" {
   statement {
-    effect  = "allow"
+    effect  = "Allow"
     actions = ["sts:AssumeRoleWithWebIdentity"]
 
     principals {
