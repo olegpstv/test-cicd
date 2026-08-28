@@ -60,3 +60,31 @@ resource "aws_iam_role" "apply" {
   name               = "${var.prefix}-gha-apply"
   assume_role_policy = data.aws_iam_policy_document.apply_trust.json
 }
+
+data "aws_iam_policy_document" "push_permissions" {
+  statement {
+    sid = "GetAuthToken"
+    effect = "Allow"
+    actions = ["ecr:GetAuthorizationToken"]
+    resources = ["*"]
+  }
+
+  statement {
+    sid = "PushToRepo"
+    effect = "Allow"
+    actions = [
+      "ecr:BatchCheckLayerAvailability",
+      "ecr:InitiateLayerUpload",
+      "ecr:UploadLayerPart",
+      "ecr:CompleteLayerUpload",
+      "ecr:PutImage",
+    ]
+    resources = [aws_ecr_repository.app.arn]
+  }
+}
+
+resource "aws_iam_role_policy" "push" {
+  name = "${var.prefix}-gha-push"
+  policy = data.aws_iam_policy_document.push_permissions.json
+  role   = aws_iam_role.push.id
+}
