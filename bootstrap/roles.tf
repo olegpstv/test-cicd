@@ -16,7 +16,7 @@ data "aws_iam_policy_document" "push_trust" {
     condition {
       test     = "StringEquals"
       variable = "${local.oidc_host}:aud"
-      values   = ["sts:amazonaws.com"]
+      values   = ["sts.amazonaws.com"]
     }
 
     condition {
