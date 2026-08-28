@@ -1,24 +1,24 @@
 data "aws_iam_policy_document" "ec2_trust" {
   statement {
-    effect = "Allow"
+    effect  = "Allow"
     actions = ["sts:AssumeRole"]
 
     principals {
       identifiers = ["ec2.amazonaws.com"]
-      type = "Service"
+      type        = "Service"
     }
   }
 }
 
 resource "aws_iam_role" "instance" {
-  name = "${var.prefix}-instance"
+  name               = "${var.prefix}-instance"
   assume_role_policy = data.aws_iam_policy_document.ec2_trust.json
 }
 
 data "aws_iam_policy_document" "instance_permissions" {
   statement {
-    effect = "Allow"
-    actions = ["ecr:GetAuthorizationToken"]
+    effect    = "Allow"
+    actions   = ["ecr:GetAuthorizationToken"]
     resources = ["*"]
   }
 
@@ -34,7 +34,7 @@ data "aws_iam_policy_document" "instance_permissions" {
 }
 
 resource "aws_iam_role_policy" "instance" {
-  name = "${var.prefix}-instance"
+  name   = "${var.prefix}-instance"
   policy = data.aws_iam_policy_document.instance_permissions.json
   role   = aws_iam_role.instance.id
 }

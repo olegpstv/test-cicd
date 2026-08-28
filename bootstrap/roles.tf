@@ -88,3 +88,54 @@ resource "aws_iam_role_policy" "push" {
   policy = data.aws_iam_policy_document.push_permissions.json
   role   = aws_iam_role.push.id
 }
+
+data "aws_iam_policy_document" "apply_permissions" {
+  statement {
+    sid    = "TerraformState"
+    effect = "Allow"
+    actions = [
+      "s3:GetObject",
+      "s3:PutObject",
+      "s3:DeleteObject",
+      "s3:ListBucket",
+    ]
+    resources = [
+      aws_s3_bucket.tfstate.arn,
+      "${aws_s3_bucket.tfstate.arn}/*",
+    ]
+  }
+
+  statement {
+    sid    = "StackResources"
+    effect = "Allow"
+    actions = [
+      "ec2:*",
+      "iam:GetRole",
+      "iam:CreateRole",
+      "iam:DeleteRole",
+      "iam:PassRole",
+      "iam:TagRole",
+      "iam:ListRolePolicies",
+      "iam:ListAttachedRolePolicies",
+      "iam:ListInstanceProfilesForRole",
+      "iam:GetRolePolicy",
+      "iam:PutRolePolicy",
+      "iam:DeleteRolePolicy",
+      "iam:CreateInstanceProfile",
+      "iam:GetInstanceProfile",
+      "iam:DeleteInstanceProfile",
+      "iam:AddRoleToInstanceProfile",
+      "iam:RemoveRoleFromInstanceProfile",
+      "iam:TagInstanceProfile",
+      "ssm:GetParameter",
+      "ecr:DescribeRepositories",
+    ]
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_role_policy" "apply" {
+  name   = "${var.prefix}-gha-apply"
+  role   = aws_iam_role.apply.name
+  policy = data.aws_iam_policy_document.apply_permissions.json
+}
