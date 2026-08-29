@@ -115,6 +115,8 @@ data "aws_iam_policy_document" "apply_permissions" {
       "iam:DeleteRole",
       "iam:PassRole",
       "iam:TagRole",
+      "iam:AttachRolePolicy",
+      "iam:DetachRolePolicy",
       "iam:ListRolePolicies",
       "iam:ListAttachedRolePolicies",
       "iam:ListInstanceProfilesForRole",
