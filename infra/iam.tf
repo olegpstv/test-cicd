@@ -43,3 +43,8 @@ resource "aws_iam_instance_profile" "instance" {
   name = "${var.prefix}-instance"
   role = aws_iam_role.instance.id
 }
+
+resource "aws_iam_role_policy_attachment" "ssm" {
+  role       = aws_iam_role.instance.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
