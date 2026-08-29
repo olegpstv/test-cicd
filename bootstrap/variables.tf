@@ -15,6 +15,6 @@ variable "owner" {
 
 variable "github_repo" {
   type        = string
-  default     = "olegpstv/test-cicd"
+  default     = "olegpstv@92054329/test-cicd@1349491600"
   description = "OWNER/REPO - попадает в sub-условие trust policy"
 }
